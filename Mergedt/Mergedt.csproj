@@ -53,6 +53,9 @@
     <Compile Include="Load.Designer.cs">
       <DependentUpon>Load.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Export.cs" />
+    <Compile Include="Logic\Generate.cs" />
+    <Compile Include="Logic\Import.cs" />
     <Compile Include="Logic\TaskLogic.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
