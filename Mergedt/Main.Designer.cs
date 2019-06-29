@@ -55,16 +55,16 @@
             // 
             // btnimport
             // 
-            this.btnimport.Location = new System.Drawing.Point(31, 48);
+            this.btnimport.Location = new System.Drawing.Point(31, 57);
             this.btnimport.Name = "btnimport";
             this.btnimport.Size = new System.Drawing.Size(133, 23);
             this.btnimport.TabIndex = 1;
-            this.btnimport.Text = "打开Excel";
+            this.btnimport.Text = "打开Excel并导入";
             this.btnimport.UseVisualStyleBackColor = true;
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(31, 87);
+            this.btnGenerate.Location = new System.Drawing.Point(31, 105);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(133, 23);
             this.btnGenerate.TabIndex = 2;
@@ -73,14 +73,15 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(31, 128);
+            this.btnExport.Location = new System.Drawing.Point(31, 161);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(133, 23);
             this.btnExport.TabIndex = 3;
             this.btnExport.Text = "导出Excel";
             this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Visible = false;
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -91,7 +92,7 @@
             this.Controls.Add(this.btnimport);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Text = "合并Excel";
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
