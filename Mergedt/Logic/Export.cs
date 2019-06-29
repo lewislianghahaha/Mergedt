@@ -19,81 +19,77 @@ namespace Mergedt.Logic
             var result = true;
             var sheetcount = 0;  //记录所需的sheet页总数
             var rownum = 1;
-
+            
             try
             {
-                //SXSSFWorkbook a=new SXSSFWorkbook();
-                
                 //声明一个WorkBook
                 var xssfWorkbook=new XSSFWorkbook();
 
-                //先执行MEASUREMENT_COLOR sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充;以一个sheet表有2W行记录填充为基准)
-                //sheetcount = temp.Rows.Count % 10000 == 0 ? temp.Rows.Count / 10000 : temp.Rows.Count / 10000 + 1;
-                ////i为EXCEL的Sheet页数ID
-                //for (var i = 1; i <= sheetcount; i++)
-                //{
-                //    //创建sheet页
-                //    var sheet = xssfWorkbook.CreateSheet("MEASUREMENT_COLOR" + i);
-                //    //创建"标题行"
-                //    var row = sheet.CreateRow(0);
-                //    //创建"MEASUREMENT_COLOR"sheet页各列标题
-                //    for (var j = 0; j < temp.Columns.Count; j++)
-                //    {
-                //        //设置列宽度
-                //        sheet.SetColumnWidth(j, (int)((20 + 0.72) * 256));
-                //        //创建标题
-                //        switch (j)
-                //        {
-                //            #region SetCellValue
-                //            case 0:
-                //                row.CreateCell(j).SetCellValue("BMMEASUREMENTID");
-                //                break;
-                //            case 1:
-                //                row.CreateCell(j).SetCellValue("COLORCODE");
-                //                break;
-                //            case 2:
-                //                row.CreateCell(j).SetCellValue("FORMULAVERSIONDATE");
-                //                break;
-                //            case 3:
-                //                row.CreateCell(j).SetCellValue("DIFFUSECOARSENESS");
-                //                break;
-                //            case 4:
-                //                row.CreateCell(j).SetCellValue("CREATEDDATE");
-                //                break;
-                //            case 5:
-                //                row.CreateCell(j).SetCellValue("MEASUREMENTTIME");
-                //                break;
-                //                #endregion
-                //        }
-                //    }
+                //先执行MEASUREMENT_COLOR sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有4W行记录填充为基准)
+                sheetcount = temp.Rows.Count % 40000 == 0 ? temp.Rows.Count / 40000 : temp.Rows.Count / 40000 + 1;
+                //i为EXCEL的Sheet页数ID
+                for (var i = 1; i <= sheetcount; i++)
+                {
+                    //创建sheet页
+                    var sheet = xssfWorkbook.CreateSheet("MEASUREMENT_COLOR" + i);
+                    //创建"标题行"
+                    var row = sheet.CreateRow(0);
+                    //创建"MEASUREMENT_COLOR"sheet页各列标题
+                    for (var j = 0; j < temp.Columns.Count; j++)
+                    {
+                        //设置列宽度
+                        sheet.SetColumnWidth(j, (int)((20 + 0.72) * 256));
+                        //创建标题
+                        switch (j)
+                        {
+                            #region SetCellValue
+                            case 0:
+                                row.CreateCell(j).SetCellValue("BMMEASUREMENTID");
+                                break;
+                            case 1:
+                                row.CreateCell(j).SetCellValue("COLORCODE");
+                                break;
+                            case 2:
+                                row.CreateCell(j).SetCellValue("FORMULAVERSIONDATE");
+                                break;
+                            case 3:
+                                row.CreateCell(j).SetCellValue("DIFFUSECOARSENESS");
+                                break;
+                            case 4:
+                                row.CreateCell(j).SetCellValue("CREATEDDATE");
+                                break;
+                            case 5:
+                                row.CreateCell(j).SetCellValue("MEASUREMENTTIME");
+                                break;
+                                #endregion
+                        }
+                    }
 
-                //    //计算进行循环的起始行
-                //    var startrow = (i - 1) * 10000;
-                //    //计算进行循环的结束行
-                //    var endrow = i == sheetcount ? temp.Rows.Count : i * 10000;
+                    //计算进行循环的起始行
+                    var startrow = (i - 1) * 40000;
+                    //计算进行循环的结束行
+                    var endrow = i == sheetcount ? temp.Rows.Count : i * 40000;
 
-                //    //每一个sheet表显示10000行  
-                //    for (var j = startrow; j < endrow; j++)
-                //    {
-                //        //创建行
-                //        row = sheet.CreateRow(rownum);
-                //        //循环获取DT内的列值记录
-                //        for (var k = 0; k < temp.Columns.Count; k++)
-                //        {
-                //            row.CreateCell(k).SetCellValue(temp.Rows[j][k].ToString());
-                //        }
-                //        rownum++;
-                //    }
-                //    //当一个SHEET页填充完毕后,需将变量初始化
-                //    rownum = 1;
-                //}
+                    //每一个sheet表显示20000行  
+                    for (var j = startrow; j < endrow; j++)
+                    {
+                        //创建行
+                        row = sheet.CreateRow(rownum);
+                        //循环获取DT内的列值记录
+                        for (var k = 0; k < temp.Columns.Count; k++)
+                        {
+                            row.CreateCell(k).SetCellValue(Convert.ToString(temp.Rows[j][k]));
+                        }
+                        rownum++;
+                    }
+                    //当一个SHEET页填充完毕后,需将变量初始化
+                    rownum = 1;
+                }
 
-                //SXSSFWorkbook wb = new SXSSFWorkbook();
-                //SXSSFSheet sheet = (SXSSFSheet)wb.CreateSheet("FirstSheet");
 
                 //创建"MEASUREMENT"
-                //先执行MEASUREMENT sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充;以一个sheet表有2W行记录填充为基准)
-                sheetcount = tempdtl.Rows.Count % 20000 == 0 ? tempdtl.Rows.Count / 20000 : tempdtl.Rows.Count / 20000 + 1;
+                //先执行MEASUREMENT sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充;以一个sheet表有4W行记录填充为基准)
+                sheetcount = tempdtl.Rows.Count % 40000 == 0 ? tempdtl.Rows.Count / 40000 : tempdtl.Rows.Count / 40000 + 1;
                 //i为EXCEL的Sheet页数ID
                 for (var i = 1; i <= sheetcount; i++)
                 {
@@ -232,28 +228,29 @@ namespace Mergedt.Logic
                     }
 
                     //计算进行循环的起始行
-                    var startrow = (i - 1) * 20000;
+                    var startrow = (i - 1) * 40000;
                     //计算进行循环的结束行
-                    var endrow = i == sheetcount ? tempdtl.Rows.Count : i * 20000;
+                    var endrow = i == sheetcount ? tempdtl.Rows.Count : i * 40000;
 
                     //获取DT内的行记录步骤(重)
-                    //每一个sheet表显示20000行
+                    //每一个sheet表显示40000行
                     for (var j = startrow; j < endrow; j++)
                     {
-                        //创建行(从第二行开始)
+                        //创建行
                         row = sheet.CreateRow(rownum);
                         //循环获取DT内的列值记录
                         for (var k = 0; k < tempdtl.Columns.Count; k++)
                         {
-                            row.CreateCell(k).SetCellValue(tempdtl.Rows[j][k].ToString());
+                            //row.CreateCell(k).SetCellValue(tempdtl.Rows[j][k].ToString());
+                            row.CreateCell(k).SetCellValue(Convert.ToDouble(tempdtl.Rows[j][k]));
                         }
-                        rownum++;
+                        rownum++;    
                     }
                     //当一个SHEET页填充完毕后,需将变量初始化
                     rownum = 1;
                 }
 
-                //写入数据
+                ////写入数据
                 var file = new FileStream(fileAddress, FileMode.Create);
                 xssfWorkbook.Write(file);
                 file.Close();
