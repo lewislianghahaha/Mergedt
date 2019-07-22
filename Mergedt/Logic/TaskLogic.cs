@@ -17,8 +17,8 @@ namespace MergeDt.Logic
         private DataTable _resultTable;   //返回DT
         private bool _resultMark;        //返回是否成功标记
 
-        private DataTable _tempdt;         //返回运算成功的表头DT(导出时使用)
-        private DataTable _tempdtldt;    //返回运算成功的表体DT(导出时使用)
+        private DataTable _tempdt;         //保存运算成功的表头DT(导出时使用)
+        private DataTable _tempdtldt;    //保存运算成功的表体DT(导出时使用)
 
         #region Set
 

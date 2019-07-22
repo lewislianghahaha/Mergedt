@@ -96,14 +96,14 @@ namespace Mergedt
                 _exceldt = task.Tempdt;
                 _exceldtdtl = task.Tempdtldt;
 
-                if(!task.ResultMark) throw new Exception("运算异常");
+                if (!task.ResultMark) throw new Exception("运算异常");
                 else
                 {
                     var clickMessage = $"运算成功,是否进行导出至Excel?";
 
                     if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                     {
-                        ExportDttoExcel(_exceldt,_exceldtdtl);
+                        ExportDttoExcel();
                     }
                 }
 
@@ -124,7 +124,7 @@ namespace Mergedt
             try
             {
                 if(_exceldt.Rows.Count==0 || _exceldtdtl.Rows.Count==0) throw new Exception("没有运算成功,不能进行导出");
-                ExportDttoExcel(_exceldt,_exceldtdtl);
+                ExportDttoExcel();
             }
             catch (Exception ex)
             {
@@ -165,9 +165,7 @@ namespace Mergedt
         /// <summary>
         /// 导出DT至EXCEL
         /// </summary>
-        /// <param name="tempdt">获取要导出的表头信息 MEASUREMENT_COLOR</param>
-        /// <param name="tempdtdtl">获取要导出的表体信息 MEASUREMENT</param>
-        void ExportDttoExcel(DataTable tempdt,DataTable tempdtdtl)
+        void ExportDttoExcel()
         {
             try
             {
