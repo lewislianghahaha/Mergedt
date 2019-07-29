@@ -25,8 +25,8 @@ namespace Mergedt.Logic
                 //声明一个WorkBook
                 var xssfWorkbook=new XSSFWorkbook();
 
-                //先执行MEASUREMENT_COLOR sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有4W行记录填充为基准)
-                sheetcount = temp.Rows.Count % 40000 == 0 ? temp.Rows.Count / 40000 : temp.Rows.Count / 40000 + 1;
+                //先执行MEASUREMENT_COLOR sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有9W行记录填充为基准)
+                sheetcount = temp.Rows.Count % 90000 == 0 ? temp.Rows.Count / 90000 : temp.Rows.Count / 90000 + 1;
                 //i为EXCEL的Sheet页数ID
                 for (var i = 1; i <= sheetcount; i++)
                 {
@@ -66,9 +66,9 @@ namespace Mergedt.Logic
                     }
 
                     //计算进行循环的起始行
-                    var startrow = (i - 1) * 40000;
+                    var startrow = (i - 1) * 90000;
                     //计算进行循环的结束行
-                    var endrow = i == sheetcount ? temp.Rows.Count : i * 40000;
+                    var endrow = i == sheetcount ? temp.Rows.Count : i * 90000;
 
                     //每一个sheet表显示20000行  
                     for (var j = startrow; j < endrow; j++)
@@ -88,8 +88,8 @@ namespace Mergedt.Logic
 
 
                 //创建"MEASUREMENT"
-                //先执行MEASUREMENT sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充;以一个sheet表有4W行记录填充为基准)
-                sheetcount = tempdtl.Rows.Count % 40000 == 0 ? tempdtl.Rows.Count / 40000 : tempdtl.Rows.Count / 40000 + 1;
+                //先执行MEASUREMENT sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充;以一个sheet表有9W行记录填充为基准)
+                sheetcount = tempdtl.Rows.Count % 90000 == 0 ? tempdtl.Rows.Count / 90000 : tempdtl.Rows.Count / 90000 + 1;
                 //i为EXCEL的Sheet页数ID
                 for (var i = 1; i <= sheetcount; i++)
                 {
@@ -228,12 +228,12 @@ namespace Mergedt.Logic
                     }
 
                     //计算进行循环的起始行
-                    var startrow = (i - 1) * 40000;
+                    var startrow = (i - 1) * 90000;
                     //计算进行循环的结束行
-                    var endrow = i == sheetcount ? tempdtl.Rows.Count : i * 40000;
+                    var endrow = i == sheetcount ? tempdtl.Rows.Count : i * 90000;
 
                     //获取DT内的行记录步骤(重)
-                    //每一个sheet表显示40000行
+                    //每一个sheet表显示90000行
                     for (var j = startrow; j < endrow; j++)
                     {
                         //创建行
