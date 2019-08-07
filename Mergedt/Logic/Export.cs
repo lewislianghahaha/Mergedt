@@ -11,8 +11,8 @@ namespace Mergedt.Logic
         /// 导出数据至EXCEL
         /// </summary>
         /// <param name="fileAddress"></param>
-        /// <param name="temp"></param>
-        /// <param name="tempdtl"></param>
+        /// <param name="temp">MEASUREMENT_COLOR 表头导出记录</param>
+        /// <param name="tempdtl">MEASUREMENT 表体导出记录</param>
         /// <returns></returns>
         public bool ExportDtToExcel(string fileAddress, DataTable temp, DataTable tempdtl)
         {
@@ -70,7 +70,7 @@ namespace Mergedt.Logic
                     //计算进行循环的结束行
                     var endrow = i == sheetcount ? temp.Rows.Count : i * 90000;
 
-                    //每一个sheet表显示20000行  
+                    //每一个sheet表显示90000行  
                     for (var j = startrow; j < endrow; j++)
                     {
                         //创建行

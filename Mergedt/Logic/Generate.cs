@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+using Mergedt.DB;
 using MergeDt.DB;
 
 namespace Mergedt.Logic
@@ -11,6 +10,7 @@ namespace Mergedt.Logic
     public class Generate
     {
         DtList dtList=new DtList();
+        SqlList sqlList=new SqlList();
 
         /// <summary>
         /// 运算-获取要生成的表头信息(MEASUREMENT_COLOR)
@@ -25,17 +25,25 @@ namespace Mergedt.Logic
             {
                 //获取对应临时表(表头)
                 resultdt = dtList.Get_MeasureMentColordt();
+                //获取来源DT(后面判断时使用)
+                var sourcedt = GetSourcedt();
                 //循环从模板EXCEL获取的DT
                 foreach (DataRow row in dt.Rows)
                 {
-                    var newrow = resultdt.NewRow();
-                    newrow[0] = row[0];             //BMMEASUREMENTID(主键)
-                    newrow[1] = row[1];             //COLORCODE(内部色号)
-                    newrow[2] = row[112];           //FORMULAVERSIONDATE(版本日期)
-                    newrow[3] = row[2];             //DIFFUSECOARSENESS(颗粒度)
-                    newrow[4] = DateTime.Now.Date;  //CREATEDDATE(创建日期)
-                    newrow[5] = row[111];           //MEASUREMENTTIME(测量时间)
-                    resultdt.Rows.Add(newrow);
+                    //判断若内部色号对应的“来源”只有一个并且为CHINA;就不需要获取并插入致临时表内
+                    var result = CheckIncloudSource(Convert.ToString(row[1]),sourcedt);
+                    if(!result) continue;
+                    else
+                    {
+                        var newrow = resultdt.NewRow();
+                        newrow[0] = row[0];             //BMMEASUREMENTID(主键)
+                        newrow[1] = row[1];             //COLORCODE(内部色号)
+                        newrow[2] = row[112];           //FORMULAVERSIONDATE(版本日期)
+                        newrow[3] = row[2];             //DIFFUSECOARSENESS(颗粒度)
+                        newrow[4] = DateTime.Now.Date;  //CREATEDDATE(创建日期)
+                        newrow[5] = row[111];           //MEASUREMENTTIME(测量时间)
+                        resultdt.Rows.Add(newrow); 
+                    }
                 }
             }
             catch (Exception)
@@ -205,6 +213,43 @@ namespace Mergedt.Logic
             newrow[37] = BMA_R690;                      //BMA_R690
             newrow[38] = BMA_R700;                      //BMA_R700
             return newrow;
+        }
+
+        /// <summary>
+        ///  根据内部色号查找其“来源”只有一个并且为CHINA;若有,返回FASLE
+        /// </summary>
+        /// <param name="colCode">循环的内部色号</param>
+        /// <param name="sourcedt">初始化的来源DT</param>
+        /// <returns></returns>
+        private bool CheckIncloudSource(string colCode,DataTable sourcedt)
+        {
+            var result = true;
+            var rows = sourcedt.Select("ColorCode='" + colCode + "'");
+            //若来源只有CHINA ID=1150的话,就为FALSE
+            if (rows.Length == 1 && Convert.ToInt32(rows[0][1]) == 1150)
+            {
+               result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 初始化获取来源DT
+        /// </summary>
+        /// <returns></returns>
+        private DataTable GetSourcedt()
+        {
+            var dt=new DataTable();
+            var sqlDataAdapter=new SqlDataAdapter(sqlList.GetSourcedt(),GetConn());
+            sqlDataAdapter.Fill(dt);
+            return dt;
+        }
+
+        public SqlConnection GetConn()
+        {
+            var conn = new Conn();
+            var sqlcon = new SqlConnection(conn.GetConnectionString());
+            return sqlcon;
         }
     }
 }
