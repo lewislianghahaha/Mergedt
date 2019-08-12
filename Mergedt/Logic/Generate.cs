@@ -30,8 +30,8 @@ namespace Mergedt.Logic
                 //循环从模板EXCEL获取的DT
                 foreach (DataRow row in dt.Rows)
                 {
-                    //判断若内部色号对应的“来源”只有一个并且为CHINA;就不需要获取并插入致临时表内
-                    var result = CheckIncloudSource(Convert.ToString(row[1]),sourcedt);
+                    //判断若内部色号对应的“来源”只有一个并且为CHINA;就不需要获取并插入致临时表内(注:若判断了版本日期为空,也作排除)
+                    var result = CheckIncloudSource(Convert.ToString(row[1]),row[112].ToString(),sourcedt);
                     if(!result) continue;
                     else
                     {
@@ -216,17 +216,18 @@ namespace Mergedt.Logic
         }
 
         /// <summary>
-        ///  根据内部色号查找其“来源”只有一个并且为CHINA;若有,返回FASLE
+        ///  根据内部色号查找其“来源”只有一个并且为CHINA;若有,返回FASLE(注:若判断了版本日期为空,也作排除)
         /// </summary>
         /// <param name="colCode">循环的内部色号</param>
+        /// <param name="formuladt">获取版本日期</param>
         /// <param name="sourcedt">初始化的来源DT</param>
         /// <returns></returns>
-        private bool CheckIncloudSource(string colCode,DataTable sourcedt)
+        private bool CheckIncloudSource(string colCode,string formuladt,DataTable sourcedt)
         {
             var result = true;
             var rows = sourcedt.Select("ColorCode='" + colCode + "'");
             //若来源只有CHINA ID=1150的话,就为FALSE
-            if (rows.Length == 1 && Convert.ToInt32(rows[0][1]) == 1150)
+            if (rows.Length == 1 && Convert.ToInt32(rows[0][1]) == 1150 || formuladt=="")
             {
                result = false;
             }
